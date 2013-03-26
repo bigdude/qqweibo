@@ -14,6 +14,6 @@ print client.user.info.get()
 ```
 
 ## 参考
-* OAuth2.0鉴权 <http://wiki.open.t.qq.com/index.php/API文档》
+* OAuth2.0鉴权 <http://wiki.open.t.qq.com/index.php/OAuth2.0鉴权>
 * api文档:<http://wiki.open.t.qq.com/index.php/API文档>
 
