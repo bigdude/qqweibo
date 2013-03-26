@@ -13,7 +13,7 @@ client.get_access_token(code)
 print client.user.info.get()
 ```
 
-## 参考
+## More abou
 * OAuth2.0鉴权 <http://wiki.open.t.qq.com/index.php/OAuth2.0鉴权>
 * api文档:<http://wiki.open.t.qq.com/index.php/API文档>
 
