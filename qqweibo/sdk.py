@@ -38,7 +38,7 @@ class Client(object):
         params = {'client_id':self.app_key,'response_type':self.response_type,'redirect_uri':self.redirect_uri,'forcelogin':self.forcelogin}
         return self.base_uri + 'authorize?' + urllib.urlencode(params)
 
-    def get_access_token(self,code=''):
+    def get_access_token_from_code(self,code=''):
         """
         获取access token并存入
         """
@@ -47,6 +47,7 @@ class Client(object):
         res_str = self.request.get(self.base_uri+'access_token',params=params).content
         if 'errorCode' in res_str:
             raise ClientError(res_str)
+
         if self.set_access_token(res_str):
             return res_str
 
@@ -70,9 +71,9 @@ class Client(object):
         return json.loads(res.content)
 
     def __getattr__(self,attr):
-        return CallApi(self,attr)
+        return _CallApi(self,attr)
 
-class CallApi(object):
+class _CallApi(object):
     """
     """
 
@@ -82,7 +83,7 @@ class CallApi(object):
 
     def __getattr__(self, attr):
         name = '%s/%s' % (self._name, attr)
-        return CallApi(self._client, name)
+        return _CallApi(self._client, name)
 
     def get(self):
         return self._client.call(self._name,'GET')
@@ -91,12 +92,5 @@ class CallApi(object):
         return self._client.call(self._name,'POST')
 
     def __str__(self):
-        return '_Callable (%s)' % self._name
-
-if __name__ == '__main__':
-    client = Client('******','******',redirect_uri='http://127.0.0.1')
-    print client.get_authorize_url()
-    code = raw_input('code')
-    client.get_access_token(code)
-    print client.user.info.get()
+        return '_Callable object<%s>' % self._name
 
