@@ -18,7 +18,7 @@ print client.user.info.get()
 如果是post请求，则是client.foo.bar.post(arg1=1,arg2=2,arg3=3)
 ```
 
-## More abou
+## More about
 * OAuth2.0鉴权 <http://wiki.open.t.qq.com/index.php/OAuth2.0鉴权>
 * api文档:<http://wiki.open.t.qq.com/index.php/API文档>
 
