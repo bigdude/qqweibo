@@ -9,7 +9,7 @@ python setup.py install
 client = Client('******','******',redirect_uri='http://127.0.0.1')
 print client.get_authorize_url()
 code = raw_input('code')
-client.get_access_token(code)
+client.get_access_token_from_code(code)
 print client.user.info.get()
 ```
 
