@@ -12,10 +12,11 @@ code = raw_input('code')
 client.get_access_token_from_code(code)
 print client.user.info.get()
 ```
-
+```
 要调用其它api以此内推，比如 foo/bar 
 如果是get请求，则是 client.foo.bar.get(arg1=2,arg2=2,arg3=2)
 如果是post请求，则是client.foo.bar.post(arg1=1,arg2=2,arg3=3)
+```
 
 ## More abou
 * OAuth2.0鉴权 <http://wiki.open.t.qq.com/index.php/OAuth2.0鉴权>
