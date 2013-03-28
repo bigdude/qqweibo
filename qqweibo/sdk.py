@@ -15,9 +15,9 @@ class ClientError(Exception):
     pass
 
 class Client(object):
-    base_uri = 'https://open.t.qq.com/cgi-bin/oauth2/'
+    base_uri     = 'https://open.t.qq.com/cgi-bin/oauth2/'
     api_base_uri = 'https://open.t.qq.com/api/'
-    request = requests.session()
+    request      = requests.session()
 
     def parseurl(self,urlstr):
         """
@@ -48,23 +48,31 @@ class Client(object):
         if 'errorCode' in res_str:
             raise ClientError(res_str)
 
-        if self.set_access_token(res_str):
+        if self._set_access_token_from_str(res_str):
             return res_str
 
-    def set_access_token(self,access_token_str):
+    def _set_access_token_from_str(self,access_token_str):
         res_dict = self.parseurl(access_token_str)
         for k,v in res_dict.items():
             setattr(self,k,v)
         return True
 
-    def call(self,api_method,call_method='GET',clientip='127.0.0.1',scope='all',oauth_version='2.a'):
-        params = {'access_token':self.access_token,'openid':self.openid,'oauth_consumer_key':self.app_key,
-                'clientip':clientip,'scope':scope,'oauth_version':oauth_version}
+    def set_access_token(self,access_token,openid):
+        self.access_token = access_token
+        self.openid       = openid
+        return True
+
+    def call(self,api_method,call_method='GET',**kwargs):
+        data  = {'access_token':self.access_token,'openid':self.openid,'oauth_consumer_key':self.app_key,
+                'clientip':'','scope':'all','oauth_version':'2.a'}
+
+        if kwargs:
+            data.update(kwargs)
         
         if call_method == 'GET':
-            res = self.request.get(self.api_base_uri+api_method,params=params)
+            res = self.request.get(self.api_base_uri+api_method,params=data)
         elif call_method == 'POST':
-            res = self.request.get(self.api_base_uri+api_method,params=params)
+            res = self.request.post(self.api_base_uri+api_method,data=data)
 
         if 'errorCode' in res.content:
             raise ClientError(res.content)
@@ -74,8 +82,6 @@ class Client(object):
         return _CallApi(self,attr)
 
 class _CallApi(object):
-    """
-    """
 
     def __init__(self, client, name):
         self._client = client
@@ -85,12 +91,15 @@ class _CallApi(object):
         name = '%s/%s' % (self._name, attr)
         return _CallApi(self._client, name)
 
-    def get(self):
-        return self._client.call(self._name,'GET')
+    def get(self,**kwargs):
+        return self._client.call(api_method=self._name,call_method='GET',**kwargs)
 
-    def post(self):
-        return self._client.call(self._name,'POST')
+    def post(self,**kwargs):
+        return self._client.call(api_method=self._name,call_method='POST',**kwargs)
 
     def __str__(self):
         return '_Callable object<%s>' % self._name
+
+if __name__ == '__main__':
+    pass
 

@@ -8,6 +8,6 @@ setup(name='qqweibo',
       keywords ='qq weibo SDK',
       url='http://github.com/tianyu0915/qqweibo',  
       packages=['qqweibo'],  
-      package_data={'qqweibo':['*.*']},
+      package_data={'qqweibo':['sdk.py','__init__.py']},
 
 )  
